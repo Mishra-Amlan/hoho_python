@@ -47,7 +47,7 @@ export default function CorporateDashboard() {
           </Card>
         </div>
 
-        <AnalyticsDashboard />
+        <AnalyticsDashboard audits={[]} properties={[]} />
       </main>
     </div>
   );

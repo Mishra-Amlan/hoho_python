@@ -2,7 +2,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { useLocation } from 'wouter';
 
-export function Navigation() {
+interface NavigationProps {
+  role?: string;
+}
+
+export function Navigation({ role }: NavigationProps = {}) {
   const { user, logout } = useAuth();
   const [, setLocation] = useLocation();
 
@@ -37,15 +41,17 @@ export function Navigation() {
     hotelgm: 'Hotel GM'
   };
 
+  const currentRole = role || user?.role || 'admin';
+  
   return (
-    <nav className={`bg-white shadow-lg border-b-4 ${roleColors[user.role]}`}>
+    <nav className={`bg-white shadow-lg border-b-4 ${roleColors[currentRole] || 'border-blue-500'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <i className="fas fa-hotel text-2xl text-blue-600 mr-3"></i>
             <span className="text-xl font-bold text-gray-800">Hotel Audit Platform</span>
-            <span className={`ml-4 px-3 py-1 ${roleBadgeColors[user.role]} text-white text-sm rounded-full`}>
-              {roleNames[user.role]}
+            <span className={`ml-4 px-3 py-1 ${roleBadgeColors[currentRole] || 'bg-blue-500'} text-white text-sm rounded-full`}>
+              {roleNames[currentRole] || 'User'}
             </span>
           </div>
           <div className="flex items-center space-x-4">

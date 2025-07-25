@@ -132,7 +132,7 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Analytics Dashboard */}
-        <AnalyticsDashboard />
+        <AnalyticsDashboard audits={[]} properties={[]} />
       </main>
     </div>
   );

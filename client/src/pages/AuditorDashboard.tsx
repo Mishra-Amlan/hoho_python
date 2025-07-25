@@ -182,11 +182,15 @@ export default function AuditorDashboard() {
       {/* Modals */}
       <AuditChecklistModal 
         isOpen={showChecklistModal}
-        onClose={() => setShowChecklistModal(false)}
+        onOpenChange={setShowChecklistModal}
+        auditId={1}
+        propertyName="Grand Hotel Downtown"
       />
       <PhotoUploadModal 
         isOpen={showPhotoModal}
-        onClose={() => setShowPhotoModal(false)}
+        onOpenChange={setShowPhotoModal}
+        auditId={1}
+        propertyName="Grand Hotel Downtown"
       />
     </div>
   );
