@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
     
-    # PostgreSQL Database Configuration for Replit
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/hotel_audit_db")
+    # SQLite Database Configuration (pure Python setup)
+    DATABASE_URL: str = "sqlite:///./hotel_audit.db"
     
     @property
     def database_url(self) -> str:

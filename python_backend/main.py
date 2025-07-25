@@ -131,7 +131,7 @@ async def seed_initial_data():
 if __name__ == "__main__":
     logger.info("🚀 Starting Hotel Audit Platform FastAPI Server")
     logger.info(f"📍 Server will run on: http://0.0.0.0:8000")
-    logger.info(f"📝 API Documentation: http://0.0.0.0:8000/api/docs")
+    logger.info(f"📝 API Documentation: http://0.0.0.0:8000/docs")
     
     uvicorn.run(
         "main:app",

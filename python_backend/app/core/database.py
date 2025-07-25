@@ -1,19 +1,29 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.core.config import settings
 from app.models.models import Base
+from app.core.config import settings
 
-# Create PostgreSQL engine with SQLAlchemy
+print(f"Database engine created successfully with SQLite")
+print(f"Database file: hotel_audit.db")
+
+# Create engine for SQLite (simulating MS SQL Server structure)
 try:
-    engine = create_engine(
-        settings.database_url,
-        echo=False,  # Disable SQL logging for cleaner output
-        pool_pre_ping=True,  # Verify connections before use
-        pool_recycle=3600,  # Recycle connections every hour
-    )
-    print(f"Database engine created successfully with URL: {settings.database_url}")
+    if settings.database_url.startswith("sqlite"):
+        engine = create_engine(
+            settings.database_url,
+            echo=False,  # Disable SQL logging for cleaner output
+            connect_args={"check_same_thread": False},  # SQLite specific
+        )
+    else:
+        engine = create_engine(
+            settings.database_url,
+            echo=False,  # Disable SQL logging for cleaner output
+            pool_pre_ping=True,  # Verify connections before use
+            pool_recycle=3600,  # Recycle connections every hour
+        )
+    print("SQLite database engine created successfully!")
 except Exception as e:
-    print(f"Failed to create SQLAlchemy engine: {e}")
+    print(f"Failed to create SQLite engine: {e}")
     raise
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -22,9 +32,9 @@ def create_tables():
     """Create all tables using SQLAlchemy"""
     try:
         Base.metadata.create_all(bind=engine)
-        print("Tables created successfully!")
+        print("SQLite tables created successfully!")
     except Exception as e:
-        print(f"Error creating tables: {e}")
+        print(f"Error creating SQLite tables: {e}")
         raise
 
 def get_db():
@@ -36,13 +46,13 @@ def get_db():
         db.close()
 
 def test_connection():
-    """Test the database connection"""
+    """Test the SQLite database connection"""
     try:
         from sqlalchemy import text
         with engine.connect() as connection:
             result = connection.execute(text("SELECT 1"))
-            print(f"Database connection test successful: {result.fetchone()}")
+            print(f"SQLite connection test successful: {result.fetchone()}")
             return True
     except Exception as e:
-        print(f"Database connection test failed: {e}")
+        print(f"SQLite connection test failed: {e}")
         return False

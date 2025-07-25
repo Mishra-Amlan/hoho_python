@@ -36,3 +36,5 @@ python-multipart
 requests
 sqlalchemy
 uvicorn
+pyodbc
+sqlalchemy[mssql]
