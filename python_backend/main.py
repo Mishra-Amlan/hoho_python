@@ -65,7 +65,7 @@ async def root():
     """Root endpoint"""
     return {"message": "Hotel Audit Platform API", "version": "2.0.0", "status": "running"}
 
-@app.get("/health")
+@app.get("/api/health")
 async def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "database": "connected"}
