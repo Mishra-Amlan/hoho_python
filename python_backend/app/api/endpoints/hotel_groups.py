@@ -17,7 +17,6 @@ async def get_hotel_groups(db: Session = Depends(get_db)):
             "id": group.id,
             "name": group.name,
             "description": group.description,
-            "default_sop_files": group.default_sop_files,
             "created_at": group.created_at
         })
     
@@ -34,54 +33,24 @@ async def get_hotel_group(group_id: int, db: Session = Depends(get_db)):
         "id": group.id,
         "name": group.name,
         "description": group.description,
-        "default_sop_files": group.default_sop_files,
         "created_at": group.created_at
     }
 
-@router.post("/", response_model=HotelGroupResponse)
+@router.post("/", response_model=HotelGroupResponse, status_code=status.HTTP_201_CREATED)
 async def create_hotel_group(group_data: HotelGroupCreate, db: Session = Depends(get_db)):
-    # Check if name already exists
-    existing_group = db.query(HotelGroup).filter(HotelGroup.name == group_data.name).first()
-    if existing_group:
-        raise HTTPException(status_code=400, detail="Hotel group name already exists")
-    
-    group = HotelGroup(
+    # Create new hotel group
+    new_group = HotelGroup(
         name=group_data.name,
-        description=group_data.description,
-        default_sop_files=group_data.default_sop_files
+        description=group_data.description
     )
     
-    db.add(group)
+    db.add(new_group)
     db.commit()
-    db.refresh(group)
+    db.refresh(new_group)
     
     return {
-        "id": group.id,
-        "name": group.name,
-        "description": group.description,
-        "default_sop_files": group.default_sop_files,
-        "created_at": group.created_at
-    }
-
-@router.put("/{group_id}", response_model=HotelGroupResponse)
-async def update_hotel_group(group_id: int, group_updates: dict, db: Session = Depends(get_db)):
-    group = db.query(HotelGroup).filter(HotelGroup.id == group_id).first()
-    
-    if not group:
-        raise HTTPException(status_code=404, detail="Hotel group not found")
-    
-    # Update fields
-    for field, value in group_updates.items():
-        if hasattr(group, field) and value is not None:
-            setattr(group, field, value)
-    
-    db.commit()
-    db.refresh(group)
-    
-    return {
-        "id": group.id,
-        "name": group.name,
-        "description": group.description,
-        "default_sop_files": group.default_sop_files,
-        "created_at": group.created_at
+        "id": new_group.id,
+        "name": new_group.name,
+        "description": new_group.description,
+        "created_at": new_group.created_at
     }

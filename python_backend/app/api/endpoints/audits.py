@@ -32,29 +32,18 @@ async def get_audits(
     
     result = []
     for audit in audits:
-        audit_data = {
+        result.append({
             "id": audit.id,
             "property_id": audit.property_id,
-            "property_name": audit.property.name,
-            "property_location": audit.property.location,
-            "hotel_group_name": audit.hotel_group.name,
             "auditor_id": audit.auditor_id,
-            "auditor_name": audit.auditor.name if audit.auditor else None,
             "reviewer_id": audit.reviewer_id,
-            "reviewer_name": audit.reviewer.name if audit.reviewer else None,
             "status": audit.status,
             "overall_score": audit.overall_score,
-            "cleanliness_score": audit.cleanliness_score,
-            "branding_score": audit.branding_score,
-            "operational_score": audit.operational_score,
-            "compliance_zone": audit.compliance_zone,
-            "findings": audit.findings,
-            "action_plan": audit.action_plan,
-            "submitted_at": audit.submitted_at,
-            "reviewed_at": audit.reviewed_at,
-            "created_at": audit.created_at
-        }
-        result.append(audit_data)
+            "created_at": audit.created_at,
+            "updated_at": audit.updated_at,
+            "scheduled_date": audit.scheduled_date,
+            "completed_date": audit.completed_date
+        })
     
     return result
 

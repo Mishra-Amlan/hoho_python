@@ -2,16 +2,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
 from app.models.models import Base
-import pyodbc
 
-# Create MS SQL Server engine with SQLAlchemy
+# Create PostgreSQL engine with SQLAlchemy
 try:
     engine = create_engine(
         settings.database_url,
-        echo=True,  # Enable SQL logging for debugging
+        echo=False,  # Disable SQL logging for cleaner output
         pool_pre_ping=True,  # Verify connections before use
         pool_recycle=3600,  # Recycle connections every hour
     )
+    print(f"Database engine created successfully with URL: {settings.database_url}")
 except Exception as e:
     print(f"Failed to create SQLAlchemy engine: {e}")
     raise
@@ -35,20 +35,14 @@ def get_db():
     finally:
         db.close()
 
-def get_pyodbc_connection():
-    """Get direct pyodbc connection for raw SQL operations"""
-    return settings.get_pyodbc_connection()
-
 def test_connection():
     """Test the database connection"""
     try:
-        connection = get_pyodbc_connection()
-        cursor = connection.cursor()
-        cursor.execute("SELECT 1")
-        result = cursor.fetchone()
-        print(f"Database connection test successful: {result}")
-        connection.close()
-        return True
+        from sqlalchemy import text
+        with engine.connect() as connection:
+            result = connection.execute(text("SELECT 1"))
+            print(f"Database connection test successful: {result.fetchone()}")
+            return True
     except Exception as e:
         print(f"Database connection test failed: {e}")
         return False

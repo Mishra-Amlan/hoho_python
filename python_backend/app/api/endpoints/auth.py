@@ -53,6 +53,23 @@ async def logout():
 @router.get("/me", response_model=UserResponse)
 async def get_current_user():
     # For demo purposes, return a mock user
+    return {
+        "id": 1,
+        "username": "demo_user",
+        "role": "admin",
+        "name": "Demo User",
+        "email": "demo@hotel.com"
+    }
+
+def get_current_user():
+    """Dependency for getting current user (simplified for demo)"""
+    return {
+        "id": 1,
+        "username": "demo_user", 
+        "role": "admin",
+        "name": "Demo User",
+        "email": "demo@hotel.com"
+    }
     # In a real app, this would verify the JWT token
     return {
         "id": 1,
